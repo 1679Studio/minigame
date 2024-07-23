@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock Paper Sissors</title>
+
+</head>
+<body>
+
+<h1>Welcome to Rock Paper Sissor...</h1>
+<button id="goHome" onclick="goHome()">Home</button>
+
+<br>
+
+<button id="throwRock" onClick="playersThrow('Rock')">Rock</button>
+<button id="throwScissors"onClick="playersThrow('Scissors')">Scissors</button>
+<button id="throwPaper" onClick="playersThrow('Paper')">Paper</button>
+
+
+<div id="box">
+    <div id="playerThrowsIcon"></div>
+    <div id="aiThrowsIcon"></div>
+<h2 id="gameStatus"></h2>
+</div>
+<table>
+  <tr>  <th><b>Wins</b>
+
+    </th>
+    <th> Losses
+    </th></tr>
+    <tr>
+        <td><span id= "totalWins">wins</span></td>
+        <td><span id= "totalLosses">losses</span></td>
+    </tr>
+
+</table>
+
+<script src="js/rps.js"></script>
+</body>
+</html>
