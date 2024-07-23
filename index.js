@@ -41,19 +41,96 @@ function findEmptyTiles() {
 
 function aiSquareSelection() {
     findEmptyTiles();
+    let aiMove = null;
 
-    console.log(availableSquares);
+    // 1. Winning Move
+    aiMove = findWinningMove('O');
+    if (aiMove !== null) return aiMove;
 
-    if (availableSquares.length > 0) {
-        let randomIndex = Math.floor(Math.random() * availableSquares.length);
-        let numberSelection = availableSquares[randomIndex];
+    // 2. Blocking Move
+    aiMove = findWinningMove('X');
+    if (aiMove !== null) return aiMove;
 
-        console.log('Square selected was ' + numberSelection);
-        return numberSelection;
-    } else {
-        console.log('No available squares left to select.');
-        return null;
+    // 3. Fork Move
+    aiMove = findForkMove('O');
+    if (aiMove !== null) return aiMove;
+
+    // 4. Blocking Fork
+    aiMove = findForkMove('X');
+    if (aiMove !== null) return aiMove;
+
+    // 5. Center Move
+    if (isSquareEmpty(5)) return 5;
+
+    // 6. Opposite Corner
+    aiMove = findOppositeCorner();
+    if (aiMove !== null) return aiMove;
+
+    // 7. Empty Corner
+    aiMove = findEmptyCorner();
+    if (aiMove !== null) return aiMove;
+
+    // 8. Empty Side
+    aiMove = findEmptySide();
+    if (aiMove !== null) return aiMove;
+
+    // Fallback to random move if no strategic move found
+    let randomIndex = Math.floor(Math.random() * availableSquares.length);
+    return availableSquares[randomIndex];
+}
+
+function findWinningMove(player) {
+    for (const combo of winningCombos) {
+        let count = 0;
+        let emptySquare = null;
+        combo.forEach((index) => {
+            const square = document.getElementById(index).innerHTML;
+            if (square === player) count++;
+            if (square === '') emptySquare = index;
+        });
+        if (count === 2 && emptySquare !== null) return emptySquare;
     }
+    return null;
+}
+
+function findForkMove(player) {
+    let possibleMoves = [];
+    availableSquares.forEach((index) => {
+        document.getElementById(index).innerHTML = player;
+        if (findWinningMove(player) !== null) possibleMoves.push(index);
+        document.getElementById(index).innerHTML = '';
+    });
+    if (possibleMoves.length > 1) return possibleMoves[0]; // Fork found
+    return null;
+}
+
+function isSquareEmpty(index) {
+    return document.getElementById(index).innerHTML === '';
+}
+
+function findOppositeCorner() {
+    const corners = [[1, 9], [3, 7]];
+    for (const [corner1, corner2] of corners) {
+        if (document.getElementById(corner1).innerHTML === 'X' && isSquareEmpty(corner2)) return corner2;
+        if (document.getElementById(corner2).innerHTML === 'X' && isSquareEmpty(corner1)) return corner1;
+    }
+    return null;
+}
+
+function findEmptyCorner() {
+    const corners = [1, 3, 7, 9];
+    for (const corner of corners) {
+        if (isSquareEmpty(corner)) return corner;
+    }
+    return null;
+}
+
+function findEmptySide() {
+    const sides = [2, 4, 6, 8];
+    for (const side of sides) {
+        if (isSquareEmpty(side)) return side;
+    }
+    return null;
 }
 
 function tileSelected(square) {
@@ -64,23 +141,21 @@ function tileSelected(square) {
         if (turnCounter % 2 === 0) {
             square.innerHTML = "X";
             document.getElementById('playersTurn').innerHTML = "O's turn";
-        } else {
-            // This block should no longer be needed since AI move will be triggered after player move
-        }
-        turnCounter++;
-        checkWinner();
+            turnCounter++;
+            checkWinner();
 
-        if (turnCounter % 2 !== 0) {
             // AI makes a move immediately after player
-            let aiMove = aiSquareSelection();
-            if (aiMove !== null) {
-                let aiSquare = document.querySelector(`[data-square-id='${aiMove}']`);
-                if (aiSquare) {
-                    aiSquare.innerHTML = "O";
+            if (turnCounter % 2 !== 0) {
+                let aiMove = aiSquareSelection();
+                if (aiMove !== null) {
+                    let aiSquare = document.querySelector(`[data-square-id='${aiMove}']`);
+                    if (aiSquare) {
+                        aiSquare.innerHTML = "O";
+                    }
+                    turnCounter++;
+                    document.getElementById('playersTurn').innerHTML = "X's turn";
+                    checkWinner();
                 }
-                turnCounter++;
-                document.getElementById('playersTurn').innerHTML = "X's turn";
-                checkWinner();
             }
         }
     }
