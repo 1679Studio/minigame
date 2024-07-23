@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <style>
+        .square {
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            text-align: center;
+            vertical-align: top;
+            font-size: 24px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Welcome to minigames...</h1>
+<p>player is always X </p>
+
+<button id="goHome" onclick="goHome()">Home</button>
+
+<div id="ticTacToeBoard">
+    <div id="1" class="square" data-square-id="1"></div>
+    <div id="2" class="square" data-square-id="2"></div>
+    <div id="3" class="square" data-square-id="3"></div>
+    <br>
+    <div id="4" class="square" data-square-id="4"></div>
+    <div id="5" class="square" data-square-id="5"></div>
+    <div id="6" class="square" data-square-id="6"></div>
+    <br>
+    <div id="7" class="square" data-square-id="7"></div>
+    <div id="8" class="square" data-square-id="8"></div>
+    <div id="9" class="square" data-square-id="9"></div>
+</div>
+<p id="playersTurn">X's turn</p>
+
+<button id="reset" onclick="resetBoard()">Reset</button>
+<script src="index.js"></script>
+</body>
+</html>

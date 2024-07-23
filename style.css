@@ -1,0 +1,22 @@
+#ticTacToeBoard{
+padding-bottom: 45px;
+}
+
+.square{
+background: black;
+    color: white;
+    display:inline;
+    padding: 15px;
+}
+.square:hover{
+    color: black;
+    border: 1px solid black;
+    background: white;
+}
+
+/* Targeting by ID */
+
+/* Targeting by class */
+
+
+/* Targeting by both ID and class */
